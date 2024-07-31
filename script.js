@@ -1,5 +1,3 @@
-const { user1, user2 } = startGame()
-
 function createUser(name, marker) {
     const userName = name;
     const userMarker = marker;
@@ -14,21 +12,19 @@ function createUser(name, marker) {
     return { userName, userMarker, score, getTurn, loseTurn, turnValue, resetTurn }
 }
 
-function startGame() {
-    const user1 = createUser('Ed', 'O')
-    const user2 = createUser('De', 'X')
-
-    user1.getTurn()
-
-    return { user1, user2 }
-}
-
 const gameBoard = (function () {
     let board = [
         ['', '', ''],
         ['', '', ''],
         ['', '', '']
     ]
+
+    let gameActive;
+
+    const gameStart = () => gameActive = true;
+    const gameEnd = () => gameActive = false;
+
+    const getGameStatus = () => gameActive;
 
     const grabBoard = () => board;
 
@@ -44,9 +40,21 @@ const gameBoard = (function () {
         } 
     }
 
-    return { grabBoard, fill , clearBoard }
+    return { grabBoard, fill, clearBoard, gameStart, gameEnd, getGameStatus }
 
 })();
+
+function startGame() {
+    const user1 = createUser('Ed', 'O')
+    const user2 = createUser('De', 'X')
+
+    user1.getTurn()
+    gameBoard.gameStart()
+
+    return { user1, user2, }
+}
+
+const { user1, user2 } = startGame()
 
 function findTurn() {
     const currentUser = user1.turnValue() == 1 ? user1 : user2
@@ -58,18 +66,23 @@ function findTurn() {
 }
 
 function play(y, x) {
-    console.log(user1.turnValue(), user2.turnValue())
+    if (gameBoard.getGameStatus()) {
+        console.log(user1.turnValue(), user2.turnValue())
 
-    if (gameBoard.grabBoard()[y][x] != '') {
-        console.log('That box is filled, please fill another one')
-    } 
-
-    else {
-        let [ currentUser, otherUser ] = findTurn()
-        gameBoard.fill(currentUser, y, x)
-        console.log(gameBoard.grabBoard())
+        if (gameBoard.grabBoard()[y][x] != '') {
+            console.log('That box is filled, please fill another one')
+        } 
     
-        checkGame(currentUser, otherUser)
+        else {
+            let [ currentUser, otherUser ] = findTurn()
+            gameBoard.fill(currentUser, y, x)
+            console.log(gameBoard.grabBoard())
+        
+            checkGame(currentUser, otherUser)
+        }
+    }
+    else {
+        console.log("Game has ended")
     }
 }
 
@@ -81,10 +94,12 @@ function checkGame(currentUser, otherUser) {
     
     if (status == 'win') {
         console.log(`${currentUser.userName} won. Game Ended`)
+        gameBoard.gameEnd()
     }
 
     if (status == 'draw') {
         console.log('Draw. Game Ended')
+        gameBoard.gameEnd()
     }
 
     if (status == 'none') {
@@ -177,4 +192,5 @@ function resetGame() {
     user1.resetTurn()
     user2.resetTurn()
     user1.getTurn()
+    gameBoard.gameStart()
 }
