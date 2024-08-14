@@ -31,6 +31,9 @@ const displayController = (() => {
     const player1NameDisplay = document.querySelectorAll('.player1-name')
     const player2NameDisplay = document.querySelectorAll('.player2-name')
 
+    const player1_score = document.querySelectorAll('.player1_pts')
+    const player2_score = document.querySelectorAll('.player2_pts')
+
     const form = document.querySelector('#form')
     const startBtn = document.querySelector('#submit')
 
@@ -106,7 +109,6 @@ const displayController = (() => {
     }
 
     const popup_result = (winner) => {
-
         if (winner == user1.userName) {
             winnerImg.appendChild(player1Img)
             winnerText.textContent = `${winner} Won`
@@ -117,15 +119,23 @@ const displayController = (() => {
             winnerText.textContent = `${winner} Won`
         }
 
-         else if (winner == 'Draw') {
+        else if (winner == 'Draw') {
             winnerText.textContent = 'Draw'
-         }
+        }
 
-        
+        player1_score.forEach((a) => {
+            a.textContent = `${user1.grabScore()} pts`
+        })
+        player2_score.forEach((a) => {
+            a.textContent = `${user2.grabScore()} pts`
+        })
+
         nextgame.classList.remove('disappear')
         resultCtn.classList.remove('disappear')
 
     }
+
+
 
     const popup_reminder = (text) => {
         reminderText.textContent = text
@@ -139,7 +149,10 @@ const displayController = (() => {
 function createUser(name, marker) {
     const userName = name;
     const userMarker = marker;
+
     let score = 0;
+    const getScore = () => score++;
+    const grabScore = () => score;
 
     let turn = 0;
     const getTurn = () => turn++;
@@ -150,7 +163,8 @@ function createUser(name, marker) {
     return { 
         userName,
         userMarker, 
-        score, 
+        getScore, 
+        grabScore,
         getTurn, 
         loseTurn, 
         turnValue, 
@@ -240,6 +254,7 @@ function checkGame(currentUser, otherUser) {
     
     switch (status) {
         case 'Win':
+            currentUser.getScore()
             displayController.updateText(`${currentUser.userName} Won. Game Ended`);
             displayController.popup_result(currentUser.userName)
             board.gameEnd();
@@ -250,7 +265,7 @@ function checkGame(currentUser, otherUser) {
             board.gameEnd();
             break;
         case 'none':
-            displayController.updateText(`${otherUser.userName}'s turn`);
+            displayController.updateText(`${otherUser.userName}'s Turn`);
             break;
     }
 }
