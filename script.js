@@ -21,11 +21,11 @@ const displayController = (() => {
     const winnerImg = document.querySelector('.winner-img-ctn')
 
     const player1Img = document.createElement('img')
-    player1Img.setAttribute('src', '/assets/ratio.png')
+    player1Img.setAttribute('src', 'assets/ratio.png')
     player1Img.classList.add('winner-img')
 
     const player2Img = document.createElement('img')
-    player2Img.setAttribute('src', '/assets/aven.png')
+    player2Img.setAttribute('src', 'assets/aven.png')
     player2Img.classList.add('winner-img')
 
     const player1NameDisplay = document.querySelectorAll('.player1-name')
@@ -255,7 +255,7 @@ function checkGame(currentUser, otherUser) {
     switch (status) {
         case 'Win':
             currentUser.getScore()
-            displayController.updateText(`${currentUser.userName} Won. Game Ended`);
+            displayController.updateText(`${currentUser.userName} Won`);
             displayController.popup_result(currentUser.userName)
             board.gameEnd();
             break;
@@ -360,3 +360,4 @@ function render() {
         boardBox[i].textContent = tempArray[i]
     }
 }
+
