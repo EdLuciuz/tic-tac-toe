@@ -25,7 +25,7 @@ const displayController = (() => {
     player1Img.classList.add('winner-img')
 
     const player2Img = document.createElement('img')
-    player2Img.setAttribute('src', './gitassets/aven.png')
+    player2Img.setAttribute('src', './assets/aven.png')
     player2Img.classList.add('winner-img')
 
     const player1NameDisplay = document.querySelectorAll('.player1-name')
