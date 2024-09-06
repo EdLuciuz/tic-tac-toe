@@ -21,11 +21,11 @@ const displayController = (() => {
     const winnerImg = document.querySelector('.winner-img-ctn')
 
     const player1Img = document.createElement('img')
-    player1Img.setAttribute('src', 'assets/ratio.png')
+    player1Img.setAttribute('src', './assets/ratio.png')
     player1Img.classList.add('winner-img')
 
     const player2Img = document.createElement('img')
-    player2Img.setAttribute('src', 'assets/aven.png')
+    player2Img.setAttribute('src', './gitassets/aven.png')
     player2Img.classList.add('winner-img')
 
     const player1NameDisplay = document.querySelectorAll('.player1-name')
